@@ -1,0 +1,34 @@
+name: DiGraph Pipeline
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake make gcc
+
+      - name: Create Build Directory
+        run: mkdir -p build && cd build
+
+      - name: Run CMake
+        run: cd build && cmake ..
+
+      - name: Compile Project
+        run: cd build && make all
+
+      - name: Run Tests
+        run: cd build && make test
